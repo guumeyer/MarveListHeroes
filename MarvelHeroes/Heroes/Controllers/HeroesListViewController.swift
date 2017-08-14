@@ -31,7 +31,8 @@ class HeroesListViewController: UIViewController {
         
         heroesTableView.delegate = self
         heroesTableView.dataSource = self
-        heroesTableView.register(CharacterTableViewCell.classForCoder(), forCellReuseIdentifier: CharacterTableViewCell.identifier)
+
+        heroesTableView.register(UINib(nibName: CharacterTableViewCell.Identifier, bundle: nil), forCellReuseIdentifier: CharacterTableViewCell.Identifier)
         
         refreshFeed()
         
@@ -114,7 +115,7 @@ extension HeroesListViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CharacterTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CharacterTableViewCell.Identifier) as! CharacterTableViewCell
         
         cell.layer.borderColor = UIColor.white.cgColor
         cell.backgroundColor = UIColor.white

@@ -10,7 +10,7 @@ import UIKit
 
 class CharacterTableViewCell: UITableViewCell {
 
-    static let identifier = "CharacterTableViewCell"
+    static let Identifier = "CharacterTableViewCell"
     
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -18,17 +18,17 @@ class CharacterTableViewCell: UITableViewCell {
     
     var character:Character?{
         didSet{
-            
+            self.thumbnailImageView.image = nil
             guard let character = character else {return }
             
             if nameLabel != nil {
                 nameLabel.text = "\(character.name!)"
             }
-            self.thumbnailImageView.image = nil
             if let image = character.image {
 
                 DispatchQueue.main.async {
                     self.thumbnailImageView.image = image
+                    self.setNeedsLayout()
                     return
                 }
             }

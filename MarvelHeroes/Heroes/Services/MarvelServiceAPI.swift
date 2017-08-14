@@ -48,6 +48,11 @@ public class MarvelServiceAPI: MarvelServiceAPIProtocol {
                     
                     let responseCharacters = ResponseCharacters(dictionary: json as! NSDictionary)
                     
+                    if responseCharacters?.code != 200 {
+                        warningCompleteHandler((responseCharacters?.status)!)
+                        return
+                    }
+                    
                     charactersCompleteHandler(responseCharacters!)
                 }
 
