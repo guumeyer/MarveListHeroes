@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
 class HeroesListViewController: UIViewController {
 
@@ -14,7 +15,8 @@ class HeroesListViewController: UIViewController {
     var heroesDataManager:HeroesDataManagerProtocol?
     
     //MARK: - Attributes
-
+    let reachability = Reachability()!
+    var isReachable = true
     let screensFromBottomToLoadMoreCats: CGFloat = 2.5
     let alertTitle = NSLocalizedString("Welcome", comment: "")
     
@@ -24,17 +26,40 @@ class HeroesListViewController: UIViewController {
     //MARK: - View life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged),name: ReachabilityChangedNotification,object: reachability)
+        do{
+            try reachability.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
+        reachability.stopNotifier()
+        NotificationCenter.default.removeObserver(self,
+                                                  name: ReachabilityChangedNotification,
+                                                  object: reachability)
+    }
+    
+    //MARK: - Functions
+    func setupView(){
         let logo = UIImage(named: "logoMarvel")
         let imageView = UIImageView(image:logo)
         self.navigationItem.titleView = imageView
         
         heroesTableView.delegate = self
         heroesTableView.dataSource = self
-
+        
         heroesTableView.register(UINib(nibName: CharacterTableViewCell.Identifier, bundle: nil), forCellReuseIdentifier: CharacterTableViewCell.Identifier)
         
-        refreshFeed()
+        refresh()
         
         heroesTableView.tableHeaderView = UIView()
         heroesTableView.tableFooterView = UIView()
@@ -43,11 +68,19 @@ class HeroesListViewController: UIViewController {
         heroesTableView.separatorStyle = .none
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    func checkNetworkAvailable() -> Bool{
+        if !isReachable{
+            UIAlertController.showWarning(message: NSLocalizedString("NetworkNotReachable", comment: ""), inViewController: self)
+        }
         
+        return isReachable
     }
     
-    func refreshFeed() {
+    func refresh() {
+        
+        if !checkNetworkAvailable() {
+            return
+        }
         
         self.showActivityIndicatory()
         heroesDataManager?.refresh(completeHandler:{ character in
@@ -58,26 +91,29 @@ class HeroesListViewController: UIViewController {
         }, warningHandler: {message in
             UIAlertController.showWarning(message: message, inViewController: self)
         }, errorHandler: {error in
-            UIAlertController.showWarning(message: error.localizedDescription, inViewController: self)
+            UIAlertController.showError(message: error.localizedDescription, inViewController: self)
             
         })
     }
     
     func loadPage() {
+        
+        if !checkNetworkAvailable() {
+            return
+        }
+        
         heroesDataManager?.requestPage(completeHandler:{ character in
-            //            self.activityIndicatorView.stopAnimating()
             self.insert(newRows: character)
         }, warningHandler: {message in
             UIAlertController.showWarning(message: message, inViewController: self)
         }, errorHandler: {error in
-            UIAlertController.showWarning(message: error.localizedDescription, inViewController: self)
+            UIAlertController.showError(message: error.localizedDescription, inViewController: self)
         
         })
     }
     
     func insert(newRows : [Character]) {
-        //guard let postModels = postModels else { return }
-        
+
         var indexPaths = [IndexPath]()
         
         let newTotal = self.heroesDataManager?.numberOfItemsInFeed() ?? 0
@@ -94,6 +130,24 @@ class HeroesListViewController: UIViewController {
         detailController.hero = character
         
         self.navigationController?.pushViewController(detailController, animated: true)
+    }
+    
+    //MARK: - Communication Monitor  
+    func reachabilityChanged(note: Notification) {
+        
+        let reachability = note.object as! Reachability
+        
+        self.isReachable = reachability.isReachable
+        
+        if isReachable {
+            if reachability.isReachableViaWiFi {
+                print("Reachable via WiFi")
+            } else {
+                print("Reachable via Cellular")
+            }
+        } else {
+            print("Network not reachable")
+        }
     }
 }
 

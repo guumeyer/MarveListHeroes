@@ -236,10 +236,10 @@
 		2BEDE72E1F412ADA008E3C14 /* Heroes */ = {
 			isa = PBXGroup;
 			children = (
-				2BE6AC3A1F41343E008426B3 /* Repositories */,
 				2BEDE72F1F412ADA008E3C14 /* Componets */,
 				2BEDE7341F412ADA008E3C14 /* Controllers */,
 				2BEDE7371F412ADA008E3C14 /* Models */,
+				2BE6AC3A1F41343E008426B3 /* Repositories */,
 				2BEDE7441F412ADA008E3C14 /* Services */,
 			);
 			path = Heroes;

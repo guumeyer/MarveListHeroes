@@ -12,5 +12,6 @@
 "AmountComics"="Amount Comics";
 "NumberOfParticipationsEvents"="Number of participations Events:";
 "NumberOfParticipationsSeries"="Number of participations Series:";
-"Alert"="Atenção";
+"Alert"="Alert";
 "Error"="Error";
+"NetworkNotReachable"="No Internet Connection";
