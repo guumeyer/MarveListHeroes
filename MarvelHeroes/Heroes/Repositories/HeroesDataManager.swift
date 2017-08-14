@@ -10,9 +10,10 @@ import UIKit
 
 class HeroesDataManager:HeroesDataManagerProtocol {
     
-    
+    //MARK: - Network Service
     let marvelServiceApi:MarvelServiceAPIProtocol
     
+    //MARK: - Attributes
     private var characteres = [Character]()
     private var ids = [Int]()
     
@@ -70,51 +71,45 @@ class HeroesDataManager:HeroesDataManagerProtocol {
     
     func loadDataFromServer(replacingData: Bool, completeHandler:@escaping completeHandler, warningHandler: @escaping warningHandler, errorHandler:@escaping errorHandler){
         
-        
-//        if hasLoaded {
-//            guard currentPage != totalPages else {
-//                completeHandler([])
-//                return
-//            }
-//        }
-        
         let nextPage = self.currentPage * self.offset
         
         var newCharacteres = [Character]()
         var newIDs    = [Int]()
 
-        marvelServiceApi.getCharacteres(offset: Int(nextPage), charactersCompleteHandler: { [weak self] responseCharacters in
-            guard let strongSelf = self else { return }
-            
-            if ((responseCharacters.data?.results?.count)! > 0){
-                
-                
-                strongSelf.currentPage += 1
-                
-                for characater in (responseCharacters.data?.results)! {
-                    if  !strongSelf.ids.contains(characater.id!) {
-                        newCharacteres.append(characater)
-                        newIDs.append(characater.id!)
-                    }
-
-                }
-                
-            }
-            DispatchQueue.main.async {  [weak self] message in
+        marvelServiceApi.getCharacteres(offset: Int(nextPage),
+            charactersCompleteHandler: { [weak self] responseCharacters in
                 guard let strongSelf = self else { return }
                 
-                if replacingData {
+                if ((responseCharacters.data?.results?.count)! > 0){
                     
-                    strongSelf.characteres = newCharacteres
-                    strongSelf.ids = newIDs
-                } else {
-                    strongSelf.characteres.append(contentsOf: newCharacteres)
-                    strongSelf.ids.append(contentsOf: newIDs)
+                    
+                    strongSelf.currentPage += 1
+                    
+                    for characater in (responseCharacters.data?.results)! {
+                        if  !strongSelf.ids.contains(characater.id!) {
+                            newCharacteres.append(characater)
+                            newIDs.append(characater.id!)
+                        }
+
+                    }
+                    
                 }
-                completeHandler(newCharacteres)
-                strongSelf.hasLoaded = true
-                strongSelf.fetchPageInProgress = false
-            }
+                
+                DispatchQueue.main.async {  [weak self] message in
+                    guard let strongSelf = self else { return }
+                    
+                    if replacingData {
+                        
+                        strongSelf.characteres = newCharacteres
+                        strongSelf.ids = newIDs
+                    } else {
+                        strongSelf.characteres.append(contentsOf: newCharacteres)
+                        strongSelf.ids.append(contentsOf: newIDs)
+                    }
+                    completeHandler(newCharacteres)
+                    strongSelf.hasLoaded = true
+                    strongSelf.fetchPageInProgress = false
+                }
             
             }, warningCompleteHandler: { message in
     

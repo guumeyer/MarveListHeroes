@@ -10,28 +10,27 @@ import UIKit
 
 class DetailHeroViewController: UIViewController {
 
+    //MARK: - Attributes
     var hero:Character?
-    
     var cells = ["profile", "name", "detail","comics", "events","series"]
-    
-    //ImageViewTableViewCell
-    
+
     //MARK: - IBOutlets
     @IBOutlet weak var heroDetailTableView: UITableView!
     
+    //MARK: - View life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.title = hero?.name
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-       
+    func setupView(){
         heroDetailTableView.delegate = self
         heroDetailTableView.dataSource = self
-
         heroDetailTableView.tableHeaderView = UIView()
         heroDetailTableView.tableFooterView = UIView()
         heroDetailTableView.backgroundColor = UIColor.white
@@ -43,12 +42,10 @@ class DetailHeroViewController: UIViewController {
         heroDetailTableView.estimatedRowHeight = 140
         
         heroDetailTableView.reloadData()
-        // Do any additional setup after loading the view.
     }
-
-    
 }
 
+//MARK: - TableView Delegate and DataSource
 extension DetailHeroViewController: UITableViewDataSource, UITableViewDelegate{
     
     func getIdentifierByIndex(index:Int) -> String {
@@ -88,37 +85,20 @@ extension DetailHeroViewController: UITableViewDataSource, UITableViewDelegate{
                 nameCell.nameLabel.text = hero?.name
                 nameCell.nameLabel.sizeToFit()
             }
-            
             break
         case "detail":
-            if let detailCell = cell as? DetailTableViewCell {
-                
-                detailCell.titleLabel.text = NSLocalizedString("Decription", comment: "")
-                detailCell.nameLabel.text = hero?.description
-                detailCell.nameLabel.sizeToFit()
-            }
+             setupDetailTableViewCell(cell!, titleText: NSLocalizedString("Decription", comment: ""), description: (hero?.description)!)
             break
         case "comics":
-            if let comicsCell = cell as? DetailTableViewCell {
-                comicsCell.titleLabel.text = NSLocalizedString("AmountComics", comment: "")
-                comicsCell.nameLabel.text = "\(hero?.comics?.available ?? 0)"
-                comicsCell.nameLabel.sizeToFit()
-            }
+             setupDetailTableViewCell(cell!, titleText: NSLocalizedString("AmountComics", comment: ""), description: "\(hero?.comics?.available ?? 0)")
             break
         case "events":
-            if let comicsCell = cell as? DetailTableViewCell {
-                comicsCell.titleLabel.text = NSLocalizedString("NumberOfParticipationsEvents", comment: "")
-                comicsCell.nameLabel.text = "\(hero?.events?.available ?? 0)"
-                comicsCell.nameLabel.sizeToFit()
-            }
+             setupDetailTableViewCell(cell!, titleText: NSLocalizedString("NumberOfParticipationsEvents", comment: ""),description: "\(hero?.events?.available ?? 0)")
             break
         case"series":
-            if let detailCell = cell as? DetailTableViewCell {
-                
-                detailCell.titleLabel.text = NSLocalizedString("NumberOfParticipationsSeries", comment: "")
-                detailCell.nameLabel.text = "\(hero?.series?.available ?? 0)"
-                detailCell.nameLabel.sizeToFit()
-            }
+
+            setupDetailTableViewCell(cell!, titleText: NSLocalizedString("NumberOfParticipationsSeries", comment: ""),description: "\(hero?.series?.available ?? 0)")
+
             break
             
         default:
@@ -128,8 +108,15 @@ extension DetailHeroViewController: UITableViewDataSource, UITableViewDelegate{
  
         return cell!
     }
-
     
+    func setupDetailTableViewCell(_ cell:UITableViewCell, titleText:String, description:String){
+        if let detailCell = cell as? DetailTableViewCell {
+            detailCell.titleLabel.text = titleText
+            detailCell.nameLabel.text = description
+            detailCell.nameLabel.sizeToFit()
+        }
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if indexPath.row == 0 {

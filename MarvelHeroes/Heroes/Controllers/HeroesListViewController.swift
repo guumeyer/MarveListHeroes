@@ -46,7 +46,6 @@ class HeroesListViewController: UIViewController {
         
     }
     
-    
     func refreshFeed() {
         
         self.showActivityIndicatory()
@@ -55,7 +54,12 @@ class HeroesListViewController: UIViewController {
             self.insert(newRows: character)
             self.loadPage()
             
-        }, warningHandler: {message in }, errorHandler: {error in })
+        }, warningHandler: {message in
+            UIAlertController.showWarning(message: message, inViewController: self)
+        }, errorHandler: {error in
+            UIAlertController.showWarning(message: error.localizedDescription, inViewController: self)
+            
+        })
     }
     
     func loadPage() {
@@ -90,7 +94,6 @@ class HeroesListViewController: UIViewController {
         
         self.navigationController?.pushViewController(detailController, animated: true)
     }
-
 }
 
 extension HeroesListViewController: UITableViewDataSource, UITableViewDelegate{
@@ -121,10 +124,9 @@ extension HeroesListViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 180
+        return 200
     }
-    
-    //MARK: Scroll View Delegate
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let screensFromBottom = (scrollView.contentSize.height - scrollView.contentOffset.y)/UIScreen.main.bounds.size.height;
         
