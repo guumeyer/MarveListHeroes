@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  MarvelHeros
+
+  Created by gustavo r meyer on 8/12/17.
+  Copyright © 2017 gustavo r meyer. All rights reserved.
+*/
+"Welcome" = "Welcome";
+"Name"="Name";
+"Decription"="Decription";
+"Heroes"="Heroes";
+"AmountComics"="Amount Comics";
+"NumberOfParticipationsEvents"="Number of participations Events:";
+"NumberOfParticipationsSeries"="Number of participations Series:";
+"Alert"="Atenção";
+"Error"="Error";
