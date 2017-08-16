@@ -140,6 +140,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B8645961F421CBC00213A94 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BEDE6FF1F4129BF008E3C14 /* Main.storyboard */,
+				2BEDE7041F4129BF008E3C14 /* LaunchScreen.storyboard */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		2B8645971F421CD700213A94 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				2BE6AC321F412BBC008426B3 /* MarvelHeroes-Bridging-Header.h */,
+				2BEDE72A1F412A9D008E3C14 /* Localizable.strings */,
+				2BEDE6FB1F4129BF008E3C14 /* AppDelegate.swift */,
+				2BE6AC361F412C03008426B3 /* ServerConfig.swift */,
+				2BEDE7021F4129BF008E3C14 /* Assets.xcassets */,
+				2BEDE7071F4129BF008E3C14 /* Info.plist */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
 		2BE6AC2C1F412B86008426B3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,15 +242,9 @@
 		2BEDE7291F412A6D008E3C14 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				2BE6AC321F412BBC008426B3 /* MarvelHeroes-Bridging-Header.h */,
+				2B8645971F421CD700213A94 /* Config */,
+				2B8645961F421CBC00213A94 /* Views */,
 				2BE6AC2C1F412B86008426B3 /* Extensions */,
-				2BEDE72A1F412A9D008E3C14 /* Localizable.strings */,
-				2BEDE6FB1F4129BF008E3C14 /* AppDelegate.swift */,
-				2BE6AC361F412C03008426B3 /* ServerConfig.swift */,
-				2BEDE6FF1F4129BF008E3C14 /* Main.storyboard */,
-				2BEDE7021F4129BF008E3C14 /* Assets.xcassets */,
-				2BEDE7041F4129BF008E3C14 /* LaunchScreen.storyboard */,
-				2BEDE7071F4129BF008E3C14 /* Info.plist */,
 			);
 			name = App;
 			sourceTree = "<group>";
