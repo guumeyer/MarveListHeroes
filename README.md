@@ -10,7 +10,7 @@ Network framework resquest
 
 Use pacman Activity Indicator
 
--ReachabilitySwift
+- ReachabilitySwift
 
 Library to Notify when device doesn't have internet connection
 
