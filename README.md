@@ -3,15 +3,19 @@ Simple apple that list all Marvel Heroes using continuous scroll paging
 
 ## Dependences
 - Alamofire
+
 Network framework resquest
 
--NVActivityIndicatorView
+- NVActivityIndicatorView
+
 Use pacman Activity Indicator
 
 -ReachabilitySwift
+
 Library to Notify when device doesn't have internet connection
 
 - Fabric & Crashlytics
+
 Library to help realese beta test version and report mobile app crash
 
 ## Requirements
